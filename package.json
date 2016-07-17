@@ -1,0 +1,53 @@
+{
+  "name": "function-parameter-type-validation-decorators",
+  "version": "1.0.0",
+  "description": "Validate the type of arguments passed to functions with function parameter decorators",
+  "main": "lib",
+  "engine": {
+    "node": "*"
+  },
+  "scripts": {
+    "build": "babel src -d lib",
+    "watch": "babel src -d lib -w",
+    "postinstall": "npm run build",
+    "prepublish": "npm run build",
+    "test": "babel test/src -d test/lib && ava"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/benderTheCrime/function-parameter-type-validation-decorators.git"
+  },
+  "author": "Joe Groseclose",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/benderTheCrime/function-parameter-type-validation-decorators/issues"
+  },
+  "homepage": "https://github.com/benderTheCrime/function-parameter-type-validation-decorators#readme",
+  "keywords": [
+    "babel",
+    "decorators",
+    "function",
+    "type",
+    "validate",
+    "validation"
+  ],
+  "ava": {
+    "files": [
+      "./test/index.js"
+    ],
+    "babel": "inherit"
+  },
+  "dependencies": {
+    "ava": "^0.15.2",
+    "babel-cli": "^6.10.1",
+    "babel-core": "^6.10.4",
+    "babel-plugin-transform-function-parameter-decorators": "^1.1.1",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4"
+  },
+  "devDependencies": {
+    "babel-eslint": "^6.1.2",
+    "eslint": "^3.1.0",
+    "eslint-config-benderthecrime": "^1.4.0",
+    "eslint-plugin-react": "^5.2.2"
+  }
+}
