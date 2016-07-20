@@ -39,7 +39,6 @@ const type = function type(ctor) {
 
     return typeFn;
 };
-let context;
 
 class TypeValidationError extends TypeError {
     constructor(ctor, value) {
@@ -123,17 +122,5 @@ type.isUndefined = function(value) {
 
     throw new TypeValidationError(undefined, value);
 };
-
-try {
-    context = window;
-} catch (e) {
-    context = global;
-}
-
-context.type || Object.defineProperty(context, 'type', {
-    enumerable: false,
-    configurable: false,
-    writable: false
-});
 
 export default type;
