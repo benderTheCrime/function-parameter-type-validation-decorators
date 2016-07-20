@@ -4,7 +4,6 @@
   ],
   "plugins": [
     "transform-decorators-legacy",
-    "transform-function-parameter-decorators",
-    "transform-runtime"
+    "transform-function-parameter-decorators"
   ]
 }
