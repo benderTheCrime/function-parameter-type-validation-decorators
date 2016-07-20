@@ -39,6 +39,7 @@ const type = function type(ctor) {
 
     return typeFn;
 };
+let context;
 
 class TypeValidationError extends TypeError {
     constructor(ctor, value) {
@@ -67,61 +68,72 @@ class TypeValidationFiniteNumberError extends TypeValidationError {
     }
 }
 
-Object.assign(type, {
-    isArray(value) {
-        if (Array.isArray(value)) {
-            return value;
-        }
-
-        throw new TypeValidationError(Array, value);
-    },
-    isString(value) {
-        if (typeof value === 'string') {
-            return value;
-        }
-
-        throw new TypeValidationError(String, value);
-    },
-    isNumber(value) {
-        if (typeof value === 'number' && !isNaN(value)) {
-            return value;
-        }
-
-        throw new TypeValidationError(Number, value);
-    },
-    isFinite(value) {
-        if (this.isNumber(value) && isFinite(value)) {
-            return value;
-        }
-
-        throw new TypeValidationFiniteNumberError(Number, value);
-    },
-    isBoolean(value) {
-        if (typeof value === 'boolean') {
-            return value;
-        }
-
-        throw new TypeValidationError(Boolean, value);
-    },
-    isNull(value) {
-        if (value === null) {
-            return value;
-        }
-
-        throw new TypeValidationError(null, value);
-    },
-    isUndefined(value) {
-        if (value === undefined) {
-            return value;
-        }
-
-        throw new TypeValidationError(undefined, value);
+type.isArray = function(value) {
+    if (Array.isArray(value)) {
+        return value;
     }
-});
 
-System.global.type || Object.defineProperty(System.global, 'type', {
+    throw new TypeValidationError(Array, value);
+};
+
+type.isString = function(value) {
+    if (typeof value === 'string') {
+        return value;
+    }
+
+    throw new TypeValidationError(String, value);
+};
+
+type.isNumber = function(value) {
+    if (typeof value === 'number' && !isNaN(value)) {
+        return value;
+    }
+
+    throw new TypeValidationError(Number, value);
+};
+
+type.isFinite = function(value) {
+    if (this.isNumber(value) && isFinite(value)) {
+        return value;
+    }
+
+    throw new TypeValidationFiniteNumberError(Number, value);
+};
+
+type.isBoolean = function(value) {
+    if (typeof value === 'boolean') {
+        return value;
+    }
+
+    throw new TypeValidationError(Boolean, value);
+};
+
+type.isNull = function(value) {
+    if (value === null) {
+        return value;
+    }
+
+    throw new TypeValidationError(null, value);
+};
+
+type.isUndefined = function(value) {
+    if (value === undefined) {
+        return value;
+    }
+
+    throw new TypeValidationError(undefined, value);
+};
+
+try {
+    context = window;
+} catch (e) {
+    context = global;
+}
+
+context.type || Object.defineProperty(context, 'type', {
     enumerable: false,
     configurable: false,
     writable: false
 });
+
 export default type;
