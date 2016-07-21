@@ -7,6 +7,9 @@ class Test {}
 export default {
     types: {
         error(@type test) {},
+        object(@type(Object) obj) {
+            return obj;
+        },
         array(@type(Array) arr) {
             return arr;
         },
@@ -22,12 +25,18 @@ export default {
         null(@type(null) nul) {
             return nul;
         },
+        regExp(@type(RegExp) regExp) {
+            return regExp;
+        },
         _(@type(Test) test) {
             return test;
         },
     },
     array(@type.isArray arr) {
         return arr;
+    },
+    object(@type.isObject obj) {
+        return obj;
     },
     string(@type.isString str) {
         return str;
