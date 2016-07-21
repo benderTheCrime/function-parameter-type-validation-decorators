@@ -2,6 +2,19 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.3.0] - 2016-07-20
+### Added
+- Added tests for custom types (class constructors) and functions values returned by specific constructors (eg.: Array, String, Number, null, undefined)
+
+### Changed
+- n/a
+
+### Fixed
+- Fixed an issue where specific constructors did not return their expected function values (eg.: Array, String, Number, null, undefined)
+
+### Removed
+- Removed error prefix
+
 ## [1.2.0] - 2016-07-20
 ### Added
 - n/a

@@ -1,58 +1,21 @@
-const prefix = 'Type Validation: ';
-const type = function type(ctor) {
-    let typeFn;
+class TypeValidationConstructorError extends TypeError {
+    constructor() {
+        const message = 'Cannot validate against type undefined. Use type.isUndefined instead.';
 
-    if (ctor === undefined) {
-        throw new TypeError();
+        super(message);
+        this.message = message;
+        this.name = 'TypeValidationConstructorError';
     }
-
-    switch (ctor) {
-    case Array:
-        typeFn = this.isArray;
-
-        break;
-    case String:
-        typeFn = this.isString;
-
-        break;
-    case Boolean:
-        typeFn = this.isBoolean;
-
-        break;
-    case null:
-        typeFn = this.isNull;
-
-        break;
-    case undefined:
-        typeFn = this.isUndefined;
-
-        break;
-    default:
-        typeFn = function(value) {
-            if (value instanceof ctor) {
-                return value;
-            }
-
-            throw new TypeValidationError(ctor, value);
-        };
-    }
-
-    return typeFn;
-};
+}
 
 class TypeValidationError extends TypeError {
     constructor(ctor, value) {
-        let message = `${prefix}${value} is not of type `,
-            name = ctor;
+        let message = `${value} is not of type `;
 
-        if (ctor || [ null, undefined ].indexOf(ctor) > -1) {
-            try {
-                name = `${ctor.prototype.constructor.name}`;
-            } catch (e) {}
-
-            message += name;
-        } else {
-            message = `${prefix}Cannot validate type against undefined.`;
+        try {
+            message = `${message}${ctor.prototype.constructor.name}.`;
+        } catch (e) {
+            message = `${message}${ctor}.`;
         }
 
         super(message);
@@ -66,6 +29,31 @@ class TypeValidationFiniteNumberError extends TypeValidationError {
         super('Finite Number', value);
     }
 }
+
+function type(ctor) {
+    switch (ctor) {
+    case Array:
+        return type.isArray;
+    case String:
+        return type.isString;
+    case Number:
+        return type.isNumber;
+    case Boolean:
+        return type.isBoolean;
+    case null:
+        return type.isNull;
+    case undefined:
+        throw new TypeValidationConstructorError();
+    default:
+        return function(value) {
+            if (value instanceof ctor) {
+                return value;
+            }
+
+            throw new TypeValidationError(ctor, value);
+        };
+    }
+};
 
 type.isArray = function(value) {
     if (Array.isArray(value)) {
@@ -109,7 +97,7 @@ type.isBoolean = function(value) {
 
 type.isNull = function(value) {
     if (value === null) {
-        return value;
+        return null;
     }
 
     throw new TypeValidationError(null, value);
@@ -117,7 +105,7 @@ type.isNull = function(value) {
 
 type.isUndefined = function(value) {
     if (value === undefined) {
-        return value;
+        return;
     }
 
     throw new TypeValidationError(undefined, value);
