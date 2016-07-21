@@ -32,6 +32,8 @@ class TypeValidationFiniteNumberError extends TypeValidationError {
 
 function type(ctor) {
     switch (ctor) {
+    case Object:
+        return type.isObject;
     case Array:
         return type.isArray;
     case String:
@@ -53,6 +55,16 @@ function type(ctor) {
             throw new TypeValidationError(ctor, value);
         };
     }
+};
+
+type.isObject = function(value) {
+    try {
+        if (Object.prototype.toString.call(value) === '[object Object]') {
+            return value;
+        }
+    } catch (e) {}
+
+    throw new TypeValidationError(Object, value);
 };
 
 type.isArray = function(value) {
